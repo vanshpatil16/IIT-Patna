@@ -169,13 +169,13 @@ graph TD
     subgraph Stage 1: Parsing & Extraction
         B --> C[ScienceParse Extraction<br/>Parse Abstract, Body, References]:::process
         C --> D[Multi-Layered Keyword Extraction<br/>SciBERT + KeyBERT]:::process
-        D -.-> |Example Extracted Keywords| D_Ex>["'Transformer', 'Self-Attention'"]:::output
+        D -.-> |Example Extracted Keywords| D_Ex["'Transformer', 'Self-Attention'"]:::output
     end
 
     subgraph Stage 2: Claim Analysis
         D --> E[RAG-Based Claim Identification<br/>Identify core assertions]:::analyze
         E --> F[Novelty & Confidence Assessment<br/>Compare against existing knowledge]:::analyze
-        F -.-> |Example Categorized Claim| F_Ex>["Breakthrough: 'Our architecture<br/>reduces latency by 40%'"]:::output
+        F -.-> |Example Categorized Claim| F_Ex["Breakthrough: 'Our architecture<br/>reduces latency by 40%'"]:::output
     end
 
     subgraph Stage 3: Citation Gap Analysis
@@ -184,17 +184,17 @@ graph TD
         DB2[(Semantic Scholar API)]:::db <--> G
         G --> H[Multi-Factor Relevance Scoring<br/>Similarity, Recency, Impact]:::analyze
         H --> I[Priority Classification<br/>High / Medium / Low]:::analyze
-        I -.-> |Example Citation Gap| I_Ex>["High Priority: Missing fundamental<br/>paper 'Attention Is All You Need'"]:::output
+        I -.-> |Example Citation Gap| I_Ex["High Priority: Missing fundamental<br/>paper 'Attention Is All You Need'"]:::output
     end
 
     subgraph Stage 4: Argumentation Quality
         I --> J[Toulmin Model Decomposition<br/>Analyze argument structures]:::analyze
         J --> K[Evidence Mapping<br/>Validate semantic links]:::analyze
-        K -.-> |Example Argument Validation| K_Ex>[Strong Support: Claim 1<br/>backed by Section 4.2 data]:::output
+        K -.-> |Example Argument Validation| K_Ex["Strong Support: Claim 1<br/>backed by Section 4.2 data"]:::output
     end
 
     K --> L[📊 Final Evaluation Report<br/>PDF, JSON Artifacts]:::output
-    L -.-> |Example Summary| L_Ex>[Literary Score: 7.2/10<br/>Gaps Found: 12]:::output
+    L -.-> |Example Summary| L_Ex["Literary Score: 7.2/10<br/>Gaps Found: 12"]:::output
 ```
 
 ## 📊 Output & Reports
