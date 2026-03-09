@@ -151,6 +151,52 @@ CitationEdge/
 - **Scoring**: MMR, cosine similarity, multi-factor relevance
 - **Visualization**: NetworkX argument graphs
 
+## 🔄 Detailed System Workflow
+
+Below is a detailed Mermaid workflow diagram illustrating the CitationEdge pipeline, enriched with concrete examples at each stage.
+
+```mermaid
+graph TD
+    %% Formatting styles setup
+    classDef input fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef process fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+    classDef analyze fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+    classDef output fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+    classDef db fill:#eceff1,stroke:#37474f,stroke-width:2px;
+
+    A[📄 Input Manuscript<br/>Example: 'Deep Learning for NLP.pdf']:::input --> B[Document Parsing Layer]:::process
+
+    subgraph Stage 1: Parsing & Extraction
+        B --> C[ScienceParse Extraction<br/>Parse Abstract, Body, References]:::process
+        C --> D[Multi-Layered Keyword Extraction<br/>SciBERT + KeyBERT]:::process
+        D -.-> |Example Extracted Keywords| D_Ex>['Transformer', 'Self-Attention']:::output
+    end
+
+    subgraph Stage 2: Claim Analysis
+        D --> E[RAG-Based Claim Identification<br/>Identify core assertions]:::analyze
+        E --> F[Novelty & Confidence Assessment<br/>Compare against existing knowledge]:::analyze
+        F -.-> |Example Categorized Claim| F_Ex>[Breakthrough: 'Our architecture<br/>reduces latency by 40%']:::output
+    end
+
+    subgraph Stage 3: Citation Gap Analysis
+        F --> G[Hybrid Knowledge Retrieval<br/>Query local DB & APIs]:::process
+        DB1[(Neo4j Knowledge Graph)]:::db <--> G
+        DB2[(Semantic Scholar API)]:::db <--> G
+        G --> H[Multi-Factor Relevance Scoring<br/>Similarity, Recency, Impact]:::analyze
+        H --> I[Priority Classification<br/>High / Medium / Low]:::analyze
+        I -.-> |Example Citation Gap| I_Ex>[High Priority: Missing fundamental<br/>paper 'Attention Is All You Need']:::output
+    end
+
+    subgraph Stage 4: Argumentation Quality
+        I --> J[Toulmin Model Decomposition<br/>Analyze argument structures]:::analyze
+        J --> K[Evidence Mapping<br/>Validate semantic links]:::analyze
+        K -.-> |Example Argument Validation| K_Ex>[Strong Support: Claim 1<br/>backed by Section 4.2 data]:::output
+    end
+
+    K --> L[📊 Final Evaluation Report<br/>PDF, JSON Artifacts]:::output
+    L -.-> |Example Summary| L_Ex>[Literary Score: 7.2/10<br/>Gaps Found: 12]:::output
+```
+
 ## 📊 Output & Reports
 
 ### Generated Artifacts
