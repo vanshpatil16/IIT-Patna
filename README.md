@@ -158,11 +158,11 @@ Below is a detailed Mermaid workflow diagram illustrating the CitationEdge pipel
 ```mermaid
 graph TD
     %% Formatting styles setup
-    classDef input fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef process fill:#fff3e0,stroke:#e65100,stroke-width:2px;
-    classDef analyze fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
-    classDef output fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
-    classDef db fill:#eceff1,stroke:#37474f,stroke-width:2px;
+    classDef input fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000;
+    classDef process fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000;
+    classDef analyze fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px,color:#000;
+    classDef output fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000;
+    classDef db fill:#eceff1,stroke:#37474f,stroke-width:2px,color:#000;
 
     A["📄 Input Manuscript<br/>Example: 'Deep Learning for NLP.pdf'"]:::input --> B[Document Parsing Layer]:::process
 
