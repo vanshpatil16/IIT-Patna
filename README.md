@@ -164,18 +164,18 @@ graph TD
     classDef output fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
     classDef db fill:#eceff1,stroke:#37474f,stroke-width:2px;
 
-    A[📄 Input Manuscript<br/>Example: 'Deep Learning for NLP.pdf']:::input --> B[Document Parsing Layer]:::process
+    A["📄 Input Manuscript<br/>Example: 'Deep Learning for NLP.pdf'"]:::input --> B[Document Parsing Layer]:::process
 
     subgraph Stage 1: Parsing & Extraction
         B --> C[ScienceParse Extraction<br/>Parse Abstract, Body, References]:::process
         C --> D[Multi-Layered Keyword Extraction<br/>SciBERT + KeyBERT]:::process
-        D -.-> |Example Extracted Keywords| D_Ex>['Transformer', 'Self-Attention']:::output
+        D -.-> |Example Extracted Keywords| D_Ex>["'Transformer', 'Self-Attention'"]:::output
     end
 
     subgraph Stage 2: Claim Analysis
         D --> E[RAG-Based Claim Identification<br/>Identify core assertions]:::analyze
         E --> F[Novelty & Confidence Assessment<br/>Compare against existing knowledge]:::analyze
-        F -.-> |Example Categorized Claim| F_Ex>[Breakthrough: 'Our architecture<br/>reduces latency by 40%']:::output
+        F -.-> |Example Categorized Claim| F_Ex>["Breakthrough: 'Our architecture<br/>reduces latency by 40%'"]:::output
     end
 
     subgraph Stage 3: Citation Gap Analysis
@@ -184,7 +184,7 @@ graph TD
         DB2[(Semantic Scholar API)]:::db <--> G
         G --> H[Multi-Factor Relevance Scoring<br/>Similarity, Recency, Impact]:::analyze
         H --> I[Priority Classification<br/>High / Medium / Low]:::analyze
-        I -.-> |Example Citation Gap| I_Ex>[High Priority: Missing fundamental<br/>paper 'Attention Is All You Need']:::output
+        I -.-> |Example Citation Gap| I_Ex>["High Priority: Missing fundamental<br/>paper 'Attention Is All You Need'"]:::output
     end
 
     subgraph Stage 4: Argumentation Quality
