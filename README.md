@@ -158,43 +158,50 @@ Below is a detailed Mermaid workflow diagram illustrating the CitationEdge pipel
 ```mermaid
 graph TD
     %% Formatting styles setup
-    classDef input fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000;
+    classDef ui fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#000;
     classDef process fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000;
-    classDef analyze fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px,color:#000;
-    classDef output fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000;
+    classDef rag fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000;
     classDef db fill:#eceff1,stroke:#37474f,stroke-width:2px,color:#000;
+    classDef api fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000;
+    classDef output fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000;
 
-    A["📄 Input Manuscript<br/>Example: 'Deep Learning for NLP.pdf'"]:::input --> B[Document Parsing Layer]:::process
-
-    subgraph Stage 1: Parsing & Extraction
-        B --> C[ScienceParse Extraction<br/>Parse Abstract, Body, References]:::process
-        C --> D[Multi-Layered Keyword Extraction<br/>SciBERT + KeyBERT]:::process
-        D -.-> |Example Extracted Keywords| D_Ex["'Transformer', 'Self-Attention'"]:::output
+    subgraph User Interface Layer
+        UI["Streamlit Web App / FastAPI Server"]:::ui
     end
 
-    subgraph Stage 2: Claim Analysis
-        D --> E[RAG-Based Claim Identification<br/>Identify core assertions]:::analyze
-        E --> F[Novelty & Confidence Assessment<br/>Compare against existing knowledge]:::analyze
-        F -.-> |Example Categorized Claim| F_Ex["Breakthrough: 'Our architecture<br/>reduces latency by 40%'"]:::output
+    subgraph Document Processing Layer
+        UI -->|"Upload PDF"| Parser["ScienceParse Engine<br/>Extract Abstract, Body, References"]:::process
+        Parser --> NLP["NLP Pipeline<br/>spaCy, KeyBERT, SciBERT"]:::process
+        NLP -->|"Entity & Keyword Extraction"| DB1
     end
 
-    subgraph Stage 3: Citation Gap Analysis
-        F --> G[Hybrid Knowledge Retrieval<br/>Query local DB & APIs]:::process
-        DB1[(Neo4j Knowledge Graph)]:::db <--> G
-        DB2[(Semantic Scholar API)]:::db <--> G
-        G --> H[Multi-Factor Relevance Scoring<br/>Similarity, Recency, Impact]:::analyze
-        H --> I[Priority Classification<br/>High / Medium / Low]:::analyze
-        I -.-> |Example Citation Gap| I_Ex["High Priority: Missing fundamental<br/>paper 'Attention Is All You Need'"]:::output
+    subgraph Knowledge Base Layer
+        DB1[("Neo4j Knowledge Graph")]:::db
     end
 
-    subgraph Stage 4: Argumentation Quality
-        I --> J[Toulmin Model Decomposition<br/>Analyze argument structures]:::analyze
-        J --> K[Evidence Mapping<br/>Validate semantic links]:::analyze
-        K -.-> |Example Argument Validation| K_Ex["Strong Support: Claim 1<br/>backed by Section 4.2 data"]:::output
+    subgraph RAG & Claim Extraction Engine
+        DB1 -.->|"Retrieve Context Graph"| RAG_Ctx["RAG Context Builder"]:::rag
+        Parser -->|"Section Text"| RAG_Ctx
+        RAG_Ctx --> LLM["Groq LLaMA3 LLM<br/>Claim Extraction & Categorization"]:::rag
+        
+        LLM -->|"Identify Claims"| Val["Literature Validator <br/> Batched claim queries via Semantic Scholar"]:::rag
+        
+        API[("Semantic Scholar API")]:::api <-->|"Fetch Related Papers"| Val
+        
+        Val --> Embed["SentenceTransformer <br/>  'all-MiniLM-L6-v2' <br/> Embedding Generator"]:::rag
+        Embed -->|"Compute Cosine Similarity <br/> between claim & literature abstracts"| Score["Calculate Literature Prevalence <br/> & Calibrate Confidence Scores"]:::rag
+        Score --> Categorize["Determine Claim Type & Novelty <br/> Breakthrough / Significant / Incremental"]:::rag
     end
 
-    K --> L[📊 Final Evaluation Report<br/>PDF, JSON Artifacts]:::output
-    L -.-> |Example Summary| L_Ex["Literary Score: 7.2/10<br/>Gaps Found: 12"]:::output
+    subgraph Citation Gap & Argumentation Layer
+        Categorize --> MMR["Hybrid Retrieval & MMR Scoring <br/> Neo4j + Semantic Scholar Analysis"]:::process
+        MMR --> Toulmin["Toulmin Model Analysis <br/> Semantic Evidence Mapping"]:::process
+    end
+
+    subgraph Output Generation
+        Toulmin --> Rep["Final Validation Report <br/> Literary & Argumentation Scores"]:::output
+        Rep -->|"JSON / PDF Export"| UI
+    end
 ```
 
 ## 📊 Output & Reports
